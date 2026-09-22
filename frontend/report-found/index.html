@@ -1,0 +1,213 @@
+<!-- This page allows users to report an item they found on campus with photo and finder details -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Report Found Item | Lost &amp; Found</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="site-nav">
+    <div class="container nav-container">
+      <a href="../home/index.html" class="brand-logo">
+        <div class="brand-icon">🧭</div>
+        <span>Lost <span>&amp;</span> Found</span>
+      </a>
+
+      <button class="mobile-menu-btn" aria-label="Toggle navigation menu">&#9776;</button>
+
+      <ul class="nav-links">
+        <li><a href="../home/index.html" class="nav-link">Home</a></li>
+        <li><a href="../browse/index.html" class="nav-link">Browse Items</a></li>
+        <li><a href="../login/index.html" class="nav-link">Admin / Login</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="../report-lost/index.html" class="btn-lost-sm">I Lost Something</a>
+        <a href="../report-found/index.html" class="btn-found-sm active">I Found Something</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Report Found Item Form -->
+  <main class="section">
+    <div class="narrow-container">
+      <div style="margin-bottom: 24px;">
+        <span class="badge-found" style="position: static; display: inline-block; margin-bottom: 8px;">Found Report</span>
+        <h1 class="section-title">Report a Found Item</h1>
+        <p style="color: var(--slate-600); font-size: 0.95rem; margin-top: 6px;">
+          Turn in an item you found on campus. We will immediately check for matching lost item reports from students and staff.
+        </p>
+      </div>
+
+      <div id="form-alert" class="contact-box" style="background: #ffe4e6; border-color: #fecdd3; color: #9f1239; display: none; margin-bottom: 20px;"></div>
+
+      <form id="report-found-form">
+        <!-- Item Information Panel -->
+        <div class="form-panel">
+          <h2 class="form-panel-title">1. Item Information</h2>
+
+          <div class="form-group">
+            <label for="item-name" class="form-label">
+              Item Name <span class="required">*</span>
+            </label>
+            <input type="text" id="item-name" class="form-input" placeholder="e.g. Set of Keys with Honda Keychain, Brown Wallet" required>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label for="category" class="form-label">
+                Category <span class="required">*</span>
+              </label>
+              <select id="category" class="form-select" required>
+                <option value="">Select Category</option>
+                <option value="Mobile Phone">Mobile Phone</option>
+                <option value="Wallet">Wallet</option>
+                <option value="ID Card">ID Card</option>
+                <option value="Keys">Keys</option>
+                <option value="Bag">Bag</option>
+                <option value="Laptop">Laptop</option>
+                <option value="Earphones">Earphones</option>
+                <option value="Watch">Watch</option>
+                <option value="Documents">Documents</option>
+                <option value="Jewelry">Jewelry</option>
+                <option value="Clothing">Clothing</option>
+                <option value="Books">Books</option>
+                <option value="Other">Other</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="location" class="form-label">
+                Location Found <span class="required">*</span>
+              </label>
+              <input type="text" id="location" class="form-input" placeholder="e.g. Student Center Lawn, Computer Lab 2" required>
+            </div>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label for="date" class="form-label">
+                Date Found <span class="required">*</span>
+              </label>
+              <input type="date" id="date" class="form-input" required>
+            </div>
+
+            <div class="form-group">
+              <label for="time" class="form-label">
+                Approximate Time <span class="optional">(Optional)</span>
+              </label>
+              <input type="time" id="time" class="form-input">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="description" class="form-label">
+              Detailed Description <span class="required">*</span>
+            </label>
+            <textarea id="description" rows="3" class="form-textarea" placeholder="Describe color, brand, condition, and any safe details to identify the owner..." required></textarea>
+          </div>
+
+          <!-- Photo Upload Area -->
+          <div class="form-group">
+            <label class="form-label">Item Photo <span class="optional">(Optional, max 5MB)</span></label>
+            <div id="uploader-box" class="uploader-box">
+              <div class="uploader-icon">📷</div>
+              <div class="uploader-text">Click to choose a photo or drag &amp; drop here</div>
+              <div class="uploader-subtext">Supports JPG, PNG, and WebP up to 5MB</div>
+            </div>
+            <div id="preview-container" class="preview-container">
+              <img id="preview-img" src="" alt="Preview" class="preview-img">
+              <button type="button" id="remove-photo-btn" class="remove-photo-btn">Remove Photo</button>
+            </div>
+            <input type="file" id="photo-input" accept="image/jpeg,image/jpg,image/png,image/webp" style="display: none;">
+          </div>
+        </div>
+
+        <!-- Finder Details Panel -->
+        <div class="form-panel">
+          <h2 class="form-panel-title">2. Finder / Custodian Contact</h2>
+          <p style="font-size: 0.8rem; color: var(--slate-500); margin-bottom: 16px;">
+            Your contact details allow the owner or campus security to reach you to coordinate returning the item.
+          </p>
+
+          <div class="form-group">
+            <label for="contact-name" class="form-label">
+              Finder Name or Department <span class="required">*</span>
+            </label>
+            <input type="text" id="contact-name" class="form-input" placeholder="e.g. Security Post Gate 1 / Priya (Student)" required>
+          </div>
+
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label for="contact-email" class="form-label">Email Address</label>
+              <input type="email" id="contact-email" class="form-input" placeholder="e.g. security@college.edu">
+            </div>
+
+            <div class="form-group">
+              <label for="contact-phone" class="form-label">Phone Number</label>
+              <input type="tel" id="contact-phone" class="form-input" placeholder="e.g. +91 9876500001">
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="additional-info" class="form-label">Retrieval Instructions <span class="optional">(Optional)</span></label>
+            <textarea id="additional-info" rows="2" class="form-textarea" placeholder="e.g. Deposited at Library Help Desk. Bring college ID to claim."></textarea>
+          </div>
+        </div>
+
+        <button type="submit" id="submit-btn" class="btn-submit-found">
+          Report Found Item
+        </button>
+      </form>
+    </div>
+  </main>
+
+  <!-- Submission Success & Matches Modal -->
+  <div id="success-modal" class="modal-overlay" style="display: none;">
+    <div class="modal-content" style="max-width: 680px; text-align: left;">
+      <div style="text-align: center; margin-bottom: 20px;">
+        <div style="font-size: 3rem;">🤝</div>
+        <h3 style="font-size: 1.4rem; font-weight: 800; color: var(--slate-900);">Thank You for Reporting!</h3>
+        <p style="font-size: 0.9rem; color: var(--slate-500); margin-top: 4px;">
+          Your found item report is recorded in the directory.
+        </p>
+      </div>
+
+      <div id="modal-matches-box" style="margin-bottom: 24px;">
+        <h4 style="font-size: 1rem; font-weight: 800; margin-bottom: 12px; color: var(--slate-800);">
+          Possible Lost Item Owners:
+        </h4>
+        <div id="modal-matches-list">
+          <!-- Populated dynamically via report-found.js -->
+        </div>
+        <div id="modal-no-matches" style="display: none; padding: 14px; background: var(--slate-100); border-radius: var(--radius-md); font-size: 0.85rem; color: var(--slate-600); text-align: center;">
+          No matching lost item reports found right now. The owner will be alerted when they submit a report.
+        </div>
+      </div>
+
+      <div style="display: flex; gap: 12px; justify-content: flex-end;">
+        <button type="button" id="modal-close-btn" class="btn-card-action" style="width: auto; padding: 10px 18px;">Close</button>
+        <a id="modal-view-item-btn" href="#" class="btn-submit-found" style="width: auto; padding: 10px 20px; text-decoration: none; text-align: center;">View Item Page</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>&copy; 2026 Lost &amp; Found System. Academic demonstration project.</div>
+        <div><a href="../home/index.html">Return to Home</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="../js/config.js"></script>
+  <script src="../js/report-found.js"></script>
+</body>
+</html>

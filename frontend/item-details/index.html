@@ -1,0 +1,137 @@
+<!-- This page displays comprehensive details for a specific item, contact options, and smart matches -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Item Details | Lost &amp; Found</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="site-nav">
+    <div class="container nav-container">
+      <a href="../home/index.html" class="brand-logo">
+        <div class="brand-icon">🧭</div>
+        <span>Lost <span>&amp;</span> Found</span>
+      </a>
+
+      <button class="mobile-menu-btn" aria-label="Toggle navigation menu">&#9776;</button>
+
+      <ul class="nav-links">
+        <li><a href="../home/index.html" class="nav-link">Home</a></li>
+        <li><a href="../browse/index.html" class="nav-link">Browse Items</a></li>
+        <li><a href="../login/index.html" class="nav-link">Admin / Login</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="../report-lost/index.html" class="btn-lost-sm">I Lost Something</a>
+        <a href="../report-found/index.html" class="btn-found-sm">I Found Something</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Main Item Details Section -->
+  <main class="section">
+    <div class="container">
+      <div style="margin-bottom: 20px;">
+        <a href="../browse/index.html" class="section-link">&larr; Back to Catalog</a>
+      </div>
+
+      <div id="item-error-container" style="display: none;"></div>
+
+      <div id="item-details-container" style="display: none;">
+        <!-- Two-Column Item Detail Card -->
+        <article class="detail-card">
+          <!-- Left Column: Photo Gallery -->
+          <div id="detail-gallery" class="detail-gallery">
+            <!-- Rendered via item-details.js -->
+          </div>
+
+          <!-- Right Column: Information & Actions -->
+          <div class="detail-info">
+            <div>
+              <div style="font-size: 0.75rem; color: var(--slate-400); font-weight: 700; text-transform: uppercase;">
+                Reported On <span id="detail-posted"></span>
+              </div>
+              <h1 id="detail-title" class="detail-title"></h1>
+
+              <div class="detail-desc-box">
+                <div class="detail-desc-title">Description</div>
+                <p id="detail-desc" class="detail-desc-text"></p>
+              </div>
+
+              <div class="detail-meta-table">
+                <div><strong>📍 Location:</strong> <span id="detail-location"></span></div>
+                <div><strong>📅 Date &amp; Time:</strong> <span id="detail-date"></span></div>
+              </div>
+
+              <div id="detail-additional-box" class="contact-box" style="background: #fffbeb; border-color: #fde68a; display: none; margin-bottom: 16px;">
+                <div style="font-weight: 800; font-size: 0.85rem; color: #92400e; margin-bottom: 4px;">Additional Instructions:</div>
+                <div id="detail-additional" style="font-size: 0.85rem; color: #78350f;"></div>
+              </div>
+            </div>
+
+            <!-- Contact Owner / Finder Section -->
+            <div>
+              <button type="button" id="btn-show-contact" class="contact-btn">
+                Contact Owner / Finder
+              </button>
+
+              <div id="contact-info-box" class="contact-box" style="display: none;">
+                <div style="font-weight: 800; font-size: 0.95rem; color: var(--slate-900); margin-bottom: 10px;">
+                  Verified Contact Details
+                </div>
+                <div style="font-size: 0.88rem; margin-bottom: 6px;">
+                  <strong>Name:</strong> <span id="contact-name-display"></span>
+                </div>
+                <div style="font-size: 0.88rem; margin-bottom: 6px;">
+                  <strong>Email:</strong> <span id="contact-email-display"></span>
+                </div>
+                <div style="font-size: 0.88rem; margin-bottom: 12px;">
+                  <strong>Phone:</strong> <span id="contact-phone-display"></span>
+                </div>
+                <div style="font-size: 0.75rem; color: var(--slate-500); background: var(--white); padding: 8px 12px; border-radius: var(--radius-sm);">
+                  🛡️ Safety notice: Meet in well-lit, populated campus areas (such as Student Services or Campus Security) for exchanging items.
+                </div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- Algorithmic Possible Matches -->
+        <section style="margin-top: 50px;">
+          <div class="section-header">
+            <div>
+              <div class="section-subtitle">AI &amp; Heuristic Matching</div>
+              <h2 class="section-title">Possible Matches</h2>
+              <p style="color: var(--slate-500); font-size: 0.9rem; margin-top: 4px;">
+                Candidate items from the opposite category computed based on category, name, location, and date similarity.
+              </p>
+            </div>
+          </div>
+
+          <div id="matches-container">
+            <!-- Populated dynamically via item-details.js -->
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>&copy; 2026 Lost &amp; Found System. Academic demonstration project.</div>
+        <div><a href="../home/index.html">Return to Home</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="../js/config.js"></script>
+  <script src="../js/item-details.js"></script>
+</body>
+</html>

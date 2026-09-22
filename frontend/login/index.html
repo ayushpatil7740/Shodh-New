@@ -1,0 +1,88 @@
+<!-- This page handles user and admin login and authentication -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | Lost &amp; Found</title>
+  <link rel="stylesheet" href="../css/styles.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="site-nav">
+    <div class="container nav-container">
+      <a href="../home/index.html" class="brand-logo">
+        <div class="brand-icon">🧭</div>
+        <span>Lost <span>&amp;</span> Found</span>
+      </a>
+
+      <button class="mobile-menu-btn" aria-label="Toggle navigation menu">&#9776;</button>
+
+      <ul class="nav-links">
+        <li><a href="../home/index.html" class="nav-link">Home</a></li>
+        <li><a href="../browse/index.html" class="nav-link">Browse Items</a></li>
+        <li><a href="../login/index.html" class="nav-link active">Admin / Login</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="../report-lost/index.html" class="btn-lost-sm">I Lost Something</a>
+        <a href="../report-found/index.html" class="btn-found-sm">I Found Something</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Login Form Section -->
+  <main class="section">
+    <div class="narrow-container" style="max-width: 480px;">
+      <div class="form-panel" style="text-align: center;">
+        <div style="font-size: 2.8rem; margin-bottom: 8px;">🔐</div>
+        <h1 style="font-size: 1.6rem; font-weight: 900; color: var(--slate-900);">Account Sign In</h1>
+        <p style="font-size: 0.85rem; color: var(--slate-500); margin-top: 4px; margin-bottom: 24px;">
+          Sign in to access admin moderation tools and item status controls.
+        </p>
+
+        <div id="login-error" class="contact-box" style="background: #ffe4e6; border-color: #fecdd3; color: #9f1239; display: none; text-align: left; margin-bottom: 18px;"></div>
+
+        <form id="login-form" style="text-align: left;">
+          <div class="form-group">
+            <label for="login-identifier" class="form-label">Email or Username</label>
+            <input type="text" id="login-identifier" class="form-input" placeholder="admin@college.edu or student" required>
+          </div>
+
+          <div class="form-group">
+            <label for="login-password" class="form-label">Password / Passcode</label>
+            <input type="password" id="login-password" class="form-input" placeholder="••••••••" required>
+          </div>
+
+          <button type="submit" id="btn-submit-login" class="contact-btn" style="margin-top: 10px;">
+            Sign In
+          </button>
+        </form>
+
+        <!-- Demo Credentials Helper -->
+        <div style="margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--slate-200); text-align: center;">
+          <p style="font-size: 0.8rem; color: var(--slate-500); margin-bottom: 10px;">Project Evaluator Demo Access:</p>
+          <button type="button" id="btn-demo-admin" class="btn-card-action" style="padding: 10px;">
+            ⚡ One-Click Admin Access (admin123)
+          </button>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <div>&copy; 2026 Lost &amp; Found System. Academic demonstration project.</div>
+        <div><a href="../home/index.html">Return to Home</a></div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="../js/config.js"></script>
+  <script src="../js/login.js"></script>
+</body>
+</html>

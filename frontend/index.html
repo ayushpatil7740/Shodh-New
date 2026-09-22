@@ -1,0 +1,227 @@
+<!-- This page serves as the main Home page for the Lost & Found campus application -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lost &amp; Found | Campus Portal</title>
+  <link rel="stylesheet" href="./css/styles.css">
+</head>
+<body>
+
+  <!-- Navigation Bar -->
+  <nav class="site-nav">
+    <div class="container nav-container">
+      <a href="./index.html" class="brand-logo">
+        <div class="brand-icon">🧭</div>
+        <span>Lost <span>&amp;</span> Found</span>
+      </a>
+
+      <button class="mobile-menu-btn" aria-label="Toggle navigation menu">&#9776;</button>
+
+      <ul class="nav-links">
+        <li><a href="./index.html" class="nav-link active">Home</a></li>
+        <li><a href="./browse/index.html" class="nav-link">Browse Items</a></li>
+        <li><a href="./login/index.html" class="nav-link">Admin / Login</a></li>
+      </ul>
+
+      <div class="nav-actions">
+        <a href="./report-lost/index.html" class="btn-lost-sm">I Lost Something</a>
+        <a href="./report-found/index.html" class="btn-found-sm">I Found Something</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <header class="hero-section">
+    <div class="container">
+      <div class="hero-pill">
+        <span>✨</span>
+        <span>Smart Campus Item Recovery &amp; Matching Portal</span>
+      </div>
+
+      <h1 class="hero-title">
+        Lost something? Found something?<br>
+        <span class="hero-title-highlight">Help reunite it with its owner.</span>
+      </h1>
+
+      <p class="hero-desc">
+        Report missing belongings or turn in items you found on campus. Our automated matching system connects lost and found reports in real time.
+      </p>
+
+      <div class="hero-buttons">
+        <a href="./report-lost/index.html" class="btn-lost-lg">I Lost Something</a>
+        <a href="./report-found/index.html" class="btn-found-lg">I Found Something</a>
+      </div>
+
+      <div class="hero-search-wrapper">
+        <form id="hero-search-form" class="search-form">
+          <span class="search-icon-left">&#128269;</span>
+          <input
+            type="text"
+            id="hero-search-input"
+            class="search-input"
+            placeholder="Search by item name, keyword, category, or location..."
+          >
+          <button type="submit" class="search-btn">Search</button>
+        </form>
+      </div>
+
+      <div class="stats-banner">
+        <div class="stat-item">
+          <div id="stat-total" class="stat-number">--</div>
+          <div class="stat-label">Total Reports</div>
+        </div>
+        <div class="stat-item">
+          <div id="stat-lost" class="stat-number stat-lost">--</div>
+          <div class="stat-label">Lost Items</div>
+        </div>
+        <div class="stat-item">
+          <div id="stat-found" class="stat-number stat-found">--</div>
+          <div class="stat-label">Found Items</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Recently Reported Items Section -->
+  <main>
+    <section class="section">
+      <div class="container">
+        <div class="section-header">
+          <div>
+            <div class="section-subtitle">Latest Updates</div>
+            <h2 class="section-title">Recently Reported Items</h2>
+          </div>
+          <a href="./browse/index.html" class="section-link">View all catalog items &rarr;</a>
+        </div>
+
+        <div id="recent-items-grid" class="items-grid">
+          <!-- Populated dynamically via home.js -->
+        </div>
+      </div>
+    </section>
+
+    <!-- Lost Items Section -->
+    <section class="section">
+      <div class="container">
+        <div class="section-box section-box-lost">
+          <div class="section-header">
+            <div>
+              <span class="badge-lost" style="position: static; display: inline-block; margin-bottom: 8px;">Lost Items</span>
+              <h2 class="section-title">Have you seen any of these?</h2>
+            </div>
+            <a href="./browse/index.html?type=lost" class="section-link">Browse all lost items &rarr;</a>
+          </div>
+
+          <div id="lost-items-grid" class="items-grid">
+            <!-- Populated dynamically via home.js -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Found Items Section -->
+    <section class="section">
+      <div class="container">
+        <div class="section-box section-box-found">
+          <div class="section-header">
+            <div>
+              <span class="badge-found" style="position: static; display: inline-block; margin-bottom: 8px;">Found Items</span>
+              <h2 class="section-title">Found items awaiting owners</h2>
+            </div>
+            <a href="./browse/index.html?type=found" class="section-link">Browse all found items &rarr;</a>
+          </div>
+
+          <div id="found-items-grid" class="items-grid">
+            <!-- Populated dynamically via home.js -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- How It Works Section -->
+    <section class="section">
+      <div class="container">
+        <div style="text-align: center; max-width: 600px; margin: 0 auto 36px auto;">
+          <div class="section-subtitle">Process</div>
+          <h2 class="section-title">How Lost &amp; Found Works</h2>
+          <p style="color: var(--slate-600); font-size: 0.95rem; margin-top: 8px;">
+            A simple, secure process to safely reunite belongings with students and staff.
+          </p>
+        </div>
+
+        <div class="items-grid" style="grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));">
+          <div class="form-panel" style="text-align: center; margin-bottom: 0;">
+            <div style="font-size: 2.2rem; margin-bottom: 10px;">1️⃣</div>
+            <h3 style="font-size: 1.2rem; margin-bottom: 8px;">1. Report Details</h3>
+            <p style="font-size: 0.88rem; color: var(--slate-600);">
+              Fill out the form with item name, category, location, date, and upload a clear photo.
+            </p>
+          </div>
+
+          <div class="form-panel" style="text-align: center; margin-bottom: 0;">
+            <div style="font-size: 2.2rem; margin-bottom: 10px;">2️⃣</div>
+            <h3 style="font-size: 1.2rem; margin-bottom: 8px;">2. Smart Matching</h3>
+            <p style="font-size: 0.88rem; color: var(--slate-600);">
+              Our algorithm compares category, title, location, and dates to compute potential matches.
+            </p>
+          </div>
+
+          <div class="form-panel" style="text-align: center; margin-bottom: 0;">
+            <div style="font-size: 2.2rem; margin-bottom: 10px;">3️⃣</div>
+            <h3 style="font-size: 1.2rem; margin-bottom: 8px;">3. Safe Recovery</h3>
+            <p style="font-size: 0.88rem; color: var(--slate-600);">
+              Reach out through verified contact details and safely retrieve your item on campus.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-col">
+          <div class="brand-logo" style="margin-bottom: 12px;">
+            <div class="brand-icon">🧭</div>
+            <span>Lost <span>&amp;</span> Found</span>
+          </div>
+          <p style="font-size: 0.88rem; color: var(--slate-500); line-height: 1.6; max-width: 400px;">
+            Campus Lost &amp; Found Portal for reporting lost belongings, turning in found items, and facilitating safe item recovery.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Navigation</h4>
+          <ul>
+            <li><a href="./index.html">Home</a></li>
+            <li><a href="./browse/index.html">Browse Catalog</a></li>
+            <li><a href="./report-lost/index.html">Report Lost Item</a></li>
+            <li><a href="./report-found/index.html">Report Found Item</a></li>
+            <li><a href="./admin/index.html">Admin Portal</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>College Project</h4>
+          <p style="font-size: 0.85rem; color: var(--slate-500); line-height: 1.6;">
+            Demonstrating modular HTML/CSS/JS frontend architecture, Node.js REST API, Cloudinary media storage, and JSON persistence.
+          </p>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 Lost &amp; Found System. Academic demonstration project.</div>
+        <div>Built with clean HTML, CSS, JavaScript &amp; Express</div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="./js/config.js"></script>
+  <script src="./js/home.js"></script>
+</body>
+</html>
