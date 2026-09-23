@@ -1,0 +1,15 @@
+{
+  "name": "shodh-lost-and-found",
+  "version": "1.0.0",
+  "description": "Lost & Found Web Application for College Project",
+  "scripts": {
+    "start": "node backend/server.js",
+    "dev": "node --watch backend/server.js",
+    "build": "cd backend && npm install"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "author": "",
+  "license": "ISC"
+}
