@@ -2,8 +2,9 @@
  * Shared API Configuration & Helper Utilities
  * Works across local file opening, Live Server, and Express backend
  */
+// Use relative /api path when served over http/https (works on localhost, Render, and any deployment).
+// Fall back to absolute localhost URL only when opened directly as a local file (file://).
 const API_BASE_URL = (window.location.protocol === 'http:' || window.location.protocol === 'https:')
-  && window.location.port === '5000'
   ? '/api'
   : 'http://localhost:5000/api';
 
