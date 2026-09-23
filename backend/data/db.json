@@ -1,0 +1,338 @@
+{
+  "users": [
+    {
+      "_id": "66d0a0000000000000000001",
+      "name": "Campus Security Admin",
+      "email": "admin@shodh.org",
+      "password": "$2a$10$IwqelIb3MDKGiFVSFONxs.q8Xv.gmhvdEtnGeQ9CL6aU.jj4YWljq",
+      "phone": "+91 98765 43210",
+      "role": "admin",
+      "bio": "Official Campus Security & Lost-Found Desk Administrator",
+      "avatar": "",
+      "createdAt": "2026-08-24T16:33:58.079Z",
+      "updatedAt": "2026-08-24T16:33:58.079Z"
+    },
+    {
+      "_id": "66d0a0000000000000000002",
+      "name": "Aarav Sharma",
+      "email": "aarav@shodh.org",
+      "password": "$2a$10$80mZtD1PfRWwFrFeJ51T4e6hB1iYyF8fJahyAdOWoTHekVQvu5EzW",
+      "phone": "+91 91234 56789",
+      "role": "user",
+      "bio": "B.Tech Computer Science | Year 3",
+      "avatar": "",
+      "createdAt": "2026-09-03T16:33:58.079Z",
+      "updatedAt": "2026-09-03T16:33:58.079Z"
+    },
+    {
+      "_id": "66d0a0000000000000000003",
+      "name": "Priya Patel",
+      "email": "priya@shodh.org",
+      "password": "$2a$10$80mZtD1PfRWwFrFeJ51T4e6hB1iYyF8fJahyAdOWoTHekVQvu5EzW",
+      "phone": "+91 99887 76655",
+      "role": "user",
+      "bio": "Biotechnology Dept | Year 2",
+      "avatar": "",
+      "createdAt": "2026-09-08T16:33:58.079Z",
+      "updatedAt": "2026-09-08T16:33:58.079Z"
+    },
+    {
+      "_id": "66d0a0000000000000000004",
+      "name": "Rohit Verma",
+      "email": "rohit@shodh.org",
+      "password": "$2a$10$80mZtD1PfRWwFrFeJ51T4e6hB1iYyF8fJahyAdOWoTHekVQvu5EzW",
+      "phone": "+91 94455 66778",
+      "role": "user",
+      "bio": "Mechanical Engineering | Year 4",
+      "avatar": "",
+      "createdAt": "2026-09-13T16:33:58.079Z",
+      "updatedAt": "2026-09-13T16:33:58.079Z"
+    }
+  ],
+  "items": [
+    {
+      "_id": "66d0b0000000000000000001",
+      "title": "MacBook Pro 14\" (Space Grey) in Black Sleeve",
+      "description": "Left my Space Grey MacBook Pro inside a dark grey felt sleeve on table 14 near the silent reading section. It has stickers of GitHub and React on the lid.",
+      "category": "Electronics",
+      "type": "lost",
+      "location": {
+        "placeName": "Central Library 3rd Floor",
+        "city": "Main Campus",
+        "landmark": "Table #14 near Silent Zone"
+      },
+      "dateLostOrFound": "2026-09-21T16:33:58.079Z",
+      "status": "active",
+      "reward": "₹2,000 & Eternal Gratitude",
+      "contactName": "Aarav Sharma",
+      "contactPhone": "+91 91234 56789",
+      "contactEmail": "aarav@shodh.org",
+      "secretQuestion": "What is the background wallpaper of the login screen?",
+      "postedBy": "66d0a0000000000000000002",
+      "claimedBy": null,
+      "tags": [
+        "macbook",
+        "apple",
+        "laptop",
+        "library"
+      ],
+      "viewsCount": 42,
+      "createdAt": "2026-09-21T16:33:58.079Z",
+      "updatedAt": "2026-09-21T16:33:58.079Z"
+    },
+    {
+      "_id": "66d0b0000000000000000002",
+      "title": "Apple AirPods Pro (2nd Gen) with Matte Blue Protective Case",
+      "description": "Found a pair of AirPods Pro in a matte dark blue silicon case with a small carabiner. Left behind on the center dining table.",
+      "category": "Electronics",
+      "type": "found",
+      "location": {
+        "placeName": "Student Food Court / Cafeteria",
+        "city": "Main Campus",
+        "landmark": "Table #8 near Juice Bar"
+      },
+      "dateLostOrFound": "2026-09-22T22:33:58.079Z",
+      "status": "active",
+      "reward": "",
+      "contactName": "Priya Patel",
+      "contactPhone": "+91 99887 76655",
+      "contactEmail": "priya@shodh.org",
+      "secretQuestion": "What name is etched inside or appears on Bluetooth connect?",
+      "postedBy": "66d0a0000000000000000003",
+      "claimedBy": null,
+      "tags": [
+        "airpods",
+        "apple",
+        "earbuds",
+        "cafeteria"
+      ],
+      "viewsCount": 65,
+      "createdAt": "2026-09-22T22:33:58.079Z",
+      "updatedAt": "2026-09-22T22:33:58.079Z"
+    },
+    {
+      "_id": "66d0b0000000000000000003",
+      "title": "Brown Leather Fossil Wallet with ID & Metro Card",
+      "description": "Lost brown bifold Fossil wallet. Contains national identity card, campus student card, metro pass, and some cash. Very urgent as it has important documents.",
+      "category": "Wallets & Bags",
+      "type": "lost",
+      "location": {
+        "placeName": "Auditorium Gate 2",
+        "city": "North Campus",
+        "landmark": "Near the bicycle parking lot"
+      },
+      "dateLostOrFound": "2026-09-22T04:33:58.079Z",
+      "status": "active",
+      "reward": "₹500 Treat",
+      "contactName": "Rohit Verma",
+      "contactPhone": "+91 94455 66778",
+      "contactEmail": "rohit@shodh.org",
+      "postedBy": "66d0a0000000000000000004",
+      "claimedBy": null,
+      "tags": [
+        "wallet",
+        "money",
+        "fossil",
+        "id-card"
+      ],
+      "viewsCount": 28,
+      "createdAt": "2026-09-22T04:33:58.079Z",
+      "updatedAt": "2026-09-22T04:33:58.079Z"
+    },
+    {
+      "_id": "66d0b0000000000000000004",
+      "title": "Official University Student ID Card - Aarav Sharma",
+      "description": "Found a student ID card belonging to Computer Science dept. Safely kept with Department Lab Assistant.",
+      "category": "Documents & IDs",
+      "type": "found",
+      "location": {
+        "placeName": "Computer Lab 3 (Turing Block)",
+        "city": "Main Campus",
+        "landmark": "Workstation 19"
+      },
+      "dateLostOrFound": "2026-09-23T04:33:58.079Z",
+      "status": "active",
+      "contactName": "Campus Security Admin",
+      "contactPhone": "+91 98765 43210",
+      "contactEmail": "admin@shodh.org",
+      "postedBy": "66d0a0000000000000000001",
+      "claimedBy": null,
+      "tags": [
+        "id card",
+        "student id",
+        "cs dept"
+      ],
+      "viewsCount": 15,
+      "createdAt": "2026-09-23T04:33:58.079Z",
+      "updatedAt": "2026-09-23T04:33:58.079Z"
+    },
+    {
+      "_id": "66d0b0000000000000000005",
+      "title": "Set of 4 Brass Keys with Captain America Keychain",
+      "description": "Found a key ring with 4 metallic keys and a circular Captain America shield keychain hanging on the fence near the bus shelter.",
+      "category": "Keys",
+      "type": "found",
+      "location": {
+        "placeName": "Campus Main Gate Bus Shelter",
+        "city": "Main Campus",
+        "landmark": "Shelter bench #2"
+      },
+      "dateLostOrFound": "2026-09-21T16:33:58.079Z",
+      "status": "active",
+      "contactName": "Rohit Verma",
+      "contactPhone": "+91 94455 66778",
+      "contactEmail": "rohit@shodh.org",
+      "postedBy": "66d0a0000000000000000004",
+      "claimedBy": null,
+      "tags": [
+        "keys",
+        "keychain",
+        "marvel",
+        "bus stop"
+      ],
+      "viewsCount": 19,
+      "createdAt": "2026-09-21T16:33:58.079Z",
+      "updatedAt": "2026-09-21T16:33:58.079Z"
+    },
+    {
+      "_id": "66d0b0000000000000000006",
+      "title": "Casio FX-991EX Scientific Calculator (Black)",
+      "description": "Lost during afternoon Engineering Mathematics exam. Back cover has a small barcode sticker and initials \"PP\".",
+      "category": "Books & Stationery",
+      "type": "lost",
+      "location": {
+        "placeName": "Examination Hall Block B",
+        "city": "East Wing",
+        "landmark": "Row 4 Seat 22"
+      },
+      "dateLostOrFound": "2026-09-20T16:33:58.079Z",
+      "status": "active",
+      "reward": "Coffee Treat ☕",
+      "contactName": "Priya Patel",
+      "contactPhone": "+91 99887 76655",
+      "contactEmail": "priya@shodh.org",
+      "postedBy": "66d0a0000000000000000003",
+      "claimedBy": null,
+      "tags": [
+        "calculator",
+        "casio",
+        "exam hall"
+      ],
+      "viewsCount": 33,
+      "createdAt": "2026-09-20T16:33:58.079Z",
+      "updatedAt": "2026-09-20T16:33:58.079Z"
+    },
+    {
+      "_id": "66d0b0000000000000000007",
+      "title": "Sony WH-1000XM4 Wireless Noise Cancelling Headphones",
+      "description": "Found black Sony over-ear headphones inside their black travel case in the Seminar Room after the guest lecture.",
+      "category": "Electronics",
+      "type": "found",
+      "location": {
+        "placeName": "Management Auditorium / Seminar Hall",
+        "city": "Main Campus",
+        "landmark": "Row H Seat 12"
+      },
+      "dateLostOrFound": "2026-09-19T16:33:58.079Z",
+      "status": "handed_over",
+      "claimedBy": "66d0a0000000000000000002",
+      "contactName": "Priya Patel",
+      "contactPhone": "+91 99887 76655",
+      "contactEmail": "priya@shodh.org",
+      "postedBy": "66d0a0000000000000000003",
+      "tags": [
+        "sony",
+        "headphones",
+        "music",
+        "resolved"
+      ],
+      "viewsCount": 88,
+      "createdAt": "2026-09-19T16:33:58.079Z",
+      "updatedAt": "2026-09-19T16:33:58.079Z"
+    },
+    {
+      "_id": "66d0b0000000000000000008",
+      "title": "Titan Octane Chronograph Watch (Silver Stainless Steel)",
+      "description": "Left my watch on the wooden bench beside the indoor badminton court while changing into sports gear.",
+      "category": "Jewelry & Watches",
+      "type": "lost",
+      "location": {
+        "placeName": "Indoor Sports Complex",
+        "city": "Sports Arena",
+        "landmark": "Badminton Court 3 changing bench"
+      },
+      "dateLostOrFound": "2026-09-21T14:33:58.079Z",
+      "status": "active",
+      "reward": "₹1,000 Cash Reward",
+      "contactName": "Rohit Verma",
+      "contactPhone": "+91 94455 66778",
+      "contactEmail": "rohit@shodh.org",
+      "postedBy": "66d0a0000000000000000004",
+      "claimedBy": null,
+      "tags": [
+        "watch",
+        "titan",
+        "sports complex"
+      ],
+      "viewsCount": 47,
+      "createdAt": "2026-09-21T14:33:58.079Z",
+      "updatedAt": "2026-09-21T14:33:58.079Z"
+    }
+  ],
+  "claims": [
+    {
+      "_id": "66d0c0000000000000000001",
+      "item": "66d0b0000000000000000007",
+      "claimant": "66d0a0000000000000000002",
+      "claimantName": "Aarav Sharma",
+      "claimantPhone": "+91 91234 56789",
+      "claimantEmail": "aarav@shodh.org",
+      "proofDescription": "It has a tiny scratch on the left pivot and is paired with my phone named \"Aarav's Phone\". The travel case also contains the airplane adapter.",
+      "proofImageUrl": "",
+      "status": "approved",
+      "adminOrOwnerNotes": "Verified Bluetooth pairing and accessory in case. Handed over successfully!",
+      "createdAt": "2026-09-19T22:33:58.079Z",
+      "updatedAt": "2026-09-19T22:33:58.079Z"
+    },
+    {
+      "_id": "66d0c0000000000000000002",
+      "item": "66d0b0000000000000000002",
+      "claimant": "66d0a0000000000000000004",
+      "claimantName": "Rohit Verma",
+      "claimantPhone": "+91 94455 66778",
+      "claimantEmail": "rohit@shodh.org",
+      "proofDescription": "The AirPods case has a small sticker residue on the bottom, and the device name on iCloud is \"Rohit's AirPods Pro\".",
+      "proofImageUrl": "",
+      "status": "pending",
+      "adminOrOwnerNotes": "",
+      "createdAt": "2026-09-23T06:33:58.079Z",
+      "updatedAt": "2026-09-23T06:33:58.079Z"
+    }
+  ],
+  "notifications": [
+    {
+      "_id": "66d0d0000000000000000001",
+      "recipient": "66d0a0000000000000000003",
+      "sender": "66d0a0000000000000000004",
+      "item": "66d0b0000000000000000002",
+      "claim": "66d0c0000000000000000002",
+      "type": "claim_received",
+      "message": "Rohit Verma submitted a claim on your found listing: \"Apple AirPods Pro (2nd Gen) with Matte Blue Protective Case\".",
+      "read": false,
+      "createdAt": "2026-09-23T06:33:58.079Z",
+      "updatedAt": "2026-09-23T06:33:58.079Z"
+    },
+    {
+      "_id": "66d0d0000000000000000002",
+      "recipient": "66d0a0000000000000000002",
+      "sender": "66d0a0000000000000000003",
+      "item": "66d0b0000000000000000007",
+      "claim": "66d0c0000000000000000001",
+      "type": "claim_approved",
+      "message": "🎉 Great news! Your claim for \"Sony WH-1000XM4 Wireless Noise Cancelling Headphones\" was approved by Priya Patel. Contact: +91 99887 76655",
+      "read": true,
+      "createdAt": "2026-09-20T03:33:58.079Z",
+      "updatedAt": "2026-09-20T03:33:58.079Z"
+    }
+  ]
+}

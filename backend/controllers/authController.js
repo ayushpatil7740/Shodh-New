@@ -1,174 +1,264 @@
-const { v4: uuidv4 } = require('uuid');
-const userStorage = require('../utils/userStorage');
+const jwt = require('jsonwebtoken');
+const User = require('../models/User');
+const Item = require('../models/Item');
+const Claim = require('../models/Claim');
 
-/**
- * POST /api/auth/login
- * Handles login via email/username + password, or admin passcode
- */
-async function login(req, res, next) {
-  try {
-    const { email, username, password, passcode } = req.body;
-
-    const identifier = email || username || '';
-    const userPass = password || passcode || '';
-
-    // 1. Quick admin check: if passcode 'admin123' is provided
-    if (userPass === 'admin123' && (!identifier || identifier.toLowerCase() === 'admin' || identifier.toLowerCase() === 'admin@college.edu')) {
-      return res.status(200).json({
-        success: true,
-        message: 'Admin login successful',
-        token: `demo-token-admin-${Date.now()}`,
-        user: {
-          id: 'admin-1',
-          name: 'Campus Administrator',
-          email: 'admin@college.edu',
-          username: 'admin',
-          role: 'admin'
-        }
-      });
+// Generate JWT
+const generateToken = (id) => {
+  return jwt.sign(
+    { id },
+    process.env.JWT_SECRET || 'shodh_super_secret_jwt_key_2026_change_in_production',
+    {
+      expiresIn: '30d',
     }
+  );
+};
 
-    if (!identifier && !userPass) {
+// @desc    Register a new user
+// @route   POST /api/auth/register
+// @access  Public
+const register = async (req, res, next) => {
+  try {
+    const { name, email, password, phone, bio } = req.body;
+
+    // Check if user exists
+    const userExists = await User.findOne({ email });
+    if (userExists) {
       return res.status(400).json({
         success: false,
-        message: 'Please provide email/username and password, or admin passcode.'
+        message: 'A user with this email address already exists',
       });
     }
 
-    // 2. Check in users.json
-    const user = await userStorage.findUserByCredentials(identifier, userPass);
-
-    if (user) {
-      // Don't return password in response
-      const { password: _, ...safeUser } = user;
-      return res.status(200).json({
-        success: true,
-        message: 'Login successful',
-        token: `demo-token-${user.id}-${Date.now()}`,
-        user: safeUser
-      });
+    // Determine avatar
+    let avatar = '';
+    if (req.file) {
+      avatar = `/uploads/${req.file.filename}`;
     }
 
-    // 3. Fallback for demo convenience: if username is admin and pass is admin123
-    if ((identifier.toLowerCase() === 'admin' || identifier.toLowerCase() === 'admin@college.edu') && userPass === 'admin123') {
-      return res.status(200).json({
-        success: true,
-        message: 'Admin login successful',
-        token: `demo-token-admin-${Date.now()}`,
-        user: {
-          id: 'admin-1',
-          name: 'Campus Administrator',
-          email: 'admin@college.edu',
-          username: 'admin',
-          role: 'admin'
-        }
-      });
-    }
-
-    // Invalid credentials
-    return res.status(401).json({
-      success: false,
-      message: 'Invalid credentials. For admin evaluation, use admin / admin123'
+    // Create user
+    const user = await User.create({
+      name,
+      email,
+      password,
+      phone: phone || '',
+      bio: bio || '',
+      avatar,
+      role: 'user', // Default role
     });
-  } catch (error) {
-    next(error);
-  }
-}
 
-/**
- * POST /api/auth/register
- * Register a new demo student/faculty account
- */
-async function register(req, res, next) {
-  try {
-    const { name, email, username, password } = req.body;
-
-    if (!name || !email || !password) {
-      return res.status(400).json({
-        success: false,
-        message: 'Name, email, and password are required.'
-      });
-    }
-
-    const users = await userStorage.getUsers();
-    const existing = users.find(
-      (u) => u.email.toLowerCase() === email.trim().toLowerCase()
-    );
-
-    if (existing) {
-      return res.status(400).json({
-        success: false,
-        message: 'An account with this email already exists.'
-      });
-    }
-
-    const newUser = {
-      id: uuidv4(),
-      name: name.trim(),
-      email: email.trim().toLowerCase(),
-      username: username ? username.trim().toLowerCase() : email.split('@')[0],
-      password: password.trim(),
-      role: 'student',
-      createdAt: new Date().toISOString()
-    };
-
-    await userStorage.createUser(newUser);
-
-    const { password: _, ...safeUser } = newUser;
+    const token = generateToken(user._id);
 
     res.status(201).json({
       success: true,
-      message: 'Registration successful!',
-      token: `demo-token-${newUser.id}-${Date.now()}`,
-      user: safeUser
+      message: 'Registration successful! Welcome to Shodh.',
+      token,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        avatar: user.avatar,
+        bio: user.bio,
+        role: user.role,
+        createdAt: user.createdAt,
+      },
     });
   } catch (error) {
     next(error);
   }
-}
+};
 
-/**
- * GET /api/auth/me
- * Return current authenticated user profile
- */
-async function getMe(req, res, next) {
+// @desc    Authenticate user & get token
+// @route   POST /api/auth/login
+// @access  Public
+const login = async (req, res, next) => {
   try {
-    const authHeader = req.headers.authorization || '';
-    if (!authHeader) {
-      return res.status(401).json({
+    const { email, password } = req.body;
+
+    // Validate email & password presence
+    if (!email || !password) {
+      return res.status(400).json({
         success: false,
-        message: 'Not authenticated. Provide Authorization header.'
+        message: 'Please provide both email and password',
       });
     }
 
-    // Default admin mock for demo token
+    // Check for user
+    const user = await User.findOne({ email }).select('+password');
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: 'Invalid email or password',
+      });
+    }
+
+    // Check if password matches
+    const isMatch = await user.matchPassword(password);
+    if (!isMatch) {
+      return res.status(401).json({
+        success: false,
+        message: 'Invalid email or password',
+      });
+    }
+
+    const token = generateToken(user._id);
+
     res.status(200).json({
       success: true,
+      message: 'Login successful',
+      token,
       user: {
-        id: 'admin-1',
-        name: 'Campus Administrator',
-        email: 'admin@college.edu',
-        role: 'admin'
-      }
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        avatar: user.avatar,
+        bio: user.bio,
+        role: user.role,
+        createdAt: user.createdAt,
+      },
     });
   } catch (error) {
     next(error);
   }
-}
+};
 
-/**
- * POST /api/auth/logout
- */
-async function logout(req, res) {
-  res.status(200).json({
-    success: true,
-    message: 'Logged out successfully.'
-  });
-}
+// @desc    Get current user profile + activity counts
+// @route   GET /api/auth/me
+// @access  Private
+const getMe = async (req, res, next) => {
+  try {
+    const user = await User.findById(req.user.id);
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User profile not found',
+      });
+    }
+
+    // Aggregate user counts
+    const itemsReported = await Item.countDocuments({ postedBy: user._id });
+    const itemsResolved = await Item.countDocuments({
+      postedBy: user._id,
+      status: { $in: ['claimed', 'resolved', 'handed_over'] },
+    });
+    const claimsSent = await Claim.countDocuments({ claimant: user._id });
+
+    res.status(200).json({
+      success: true,
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        avatar: user.avatar,
+        bio: user.bio,
+        role: user.role,
+        createdAt: user.createdAt,
+        stats: {
+          itemsReported,
+          itemsResolved,
+          claimsSent,
+        },
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Update user profile
+// @route   PUT /api/auth/profile
+// @access  Private
+const updateProfile = async (req, res, next) => {
+  try {
+    const { name, phone, bio } = req.body;
+    const user = await User.findById(req.user.id);
+
+    if (!user) {
+      return res.status(404).json({
+        success: false,
+        message: 'User not found',
+      });
+    }
+
+    if (name) user.name = name;
+    if (phone !== undefined) user.phone = phone;
+    if (bio !== undefined) user.bio = bio;
+
+    if (req.file) {
+      user.avatar = `/uploads/${req.file.filename}`;
+    }
+
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: 'Profile updated successfully',
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        avatar: user.avatar,
+        bio: user.bio,
+        role: user.role,
+        createdAt: user.createdAt,
+      },
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+// @desc    Change user password
+// @route   PUT /api/auth/change-password
+// @access  Private
+const changePassword = async (req, res, next) => {
+  try {
+    const { currentPassword, newPassword } = req.body;
+
+    if (!currentPassword || !newPassword) {
+      return res.status(400).json({
+        success: false,
+        message: 'Please provide both current and new password',
+      });
+    }
+
+    if (newPassword.length < 6) {
+      return res.status(400).json({
+        success: false,
+        message: 'New password must be at least 6 characters long',
+      });
+    }
+
+    const user = await User.findById(req.user.id).select('+password');
+    const isMatch = await user.matchPassword(currentPassword);
+
+    if (!isMatch) {
+      return res.status(400).json({
+        success: false,
+        message: 'Incorrect current password',
+      });
+    }
+
+    user.password = newPassword;
+    await user.save();
+
+    res.status(200).json({
+      success: true,
+      message: 'Password updated successfully',
+    });
+  } catch (error) {
+    next(error);
+  }
+};
 
 module.exports = {
-  login,
   register,
+  login,
   getMe,
-  logout
+  updateProfile,
+  changePassword,
 };
