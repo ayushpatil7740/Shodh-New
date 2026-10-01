@@ -63,6 +63,18 @@ function getInitialSeedData() {
       updatedAt: new Date(now - 1000 * 60 * 60 * 24 * 30).toISOString(),
     },
     {
+      _id: '66d0a0000000000000000005',
+      name: 'Ayush Patil',
+      email: 'ayushpatil7740@gmail.com',
+      password: adminPasswordHash,
+      phone: '+91 98765 43210',
+      role: 'admin',
+      bio: 'Project Lead & System Administrator',
+      avatar: '',
+      createdAt: new Date(now - 1000 * 60 * 60 * 24 * 30).toISOString(),
+      updatedAt: new Date(now - 1000 * 60 * 60 * 24 * 30).toISOString(),
+    },
+    {
       _id: user1Id,
       name: 'Aarav Sharma',
       email: 'aarav@shodh.org',

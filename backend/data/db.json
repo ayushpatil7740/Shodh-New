@@ -13,6 +13,19 @@
       "updatedAt": "2026-08-24T16:33:58.079Z"
     },
     {
+      "_id": "66d0a0000000000000000005",
+      "name": "Ayush Patil",
+      "email": "ayushpatil7740@gmail.com",
+      "password": "$2a$10$m3av8yKKO0aejYNDcSIE9.lJ8TkwTAPB7s2eWktHkdZuy1w2Bm/MO",
+      "phone": "+91 98765 43210",
+      "role": "admin",
+      "bio": "Project Lead & System Administrator",
+      "avatar": "",
+      "createdAt": "2026-10-01T16:00:00.000Z",
+      "updatedAt": "2026-10-01T16:32:36.302Z",
+      "isPasswordModified": false
+    },
+    {
       "_id": "66d0a0000000000000000002",
       "name": "Aarav Sharma",
       "email": "aarav@shodh.org",
@@ -56,6 +69,18 @@
       "role": "user",
       "createdAt": "2026-10-01T15:33:05.012Z",
       "updatedAt": "2026-10-01T15:33:05.012Z"
+    },
+    {
+      "_id": "6abe8b24000fad3302c3396c",
+      "name": "New Student",
+      "email": "new_student@college.edu",
+      "password": "$2a$10$xSUMGthgVjngAH1Y2d1TQOugklCUYGCE2YFw.RuevIR8mNZaoGPlq",
+      "role": "user",
+      "phone": "",
+      "bio": "Community Member",
+      "avatar": "",
+      "createdAt": "2026-10-01T16:32:36.388Z",
+      "updatedAt": "2026-10-01T16:32:36.388Z"
     }
   ],
   "items": [

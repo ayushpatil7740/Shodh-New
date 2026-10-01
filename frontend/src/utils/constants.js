@@ -28,6 +28,12 @@ export const ITEM_STATUSES = [
 ];
 
 export const DEMO_ACCOUNTS = {
+  ayush: {
+    email: 'ayushpatil7740@gmail.com',
+    password: 'adminpassword123',
+    label: 'Ayush Patil (Project Lead / Admin)',
+    badge: 'Full Platform & Admin Access',
+  },
   admin: {
     email: 'admin@shodh.org',
     password: 'adminpassword123',

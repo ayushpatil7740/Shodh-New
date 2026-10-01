@@ -101,6 +101,22 @@ export const Login = () => {
             <div className="grid grid-cols-1 gap-2 pt-1">
               <button
                 type="button"
+                onClick={() => handleDemoFill('ayush')}
+                disabled={loading}
+                className="w-full text-left p-2.5 rounded-xl bg-blue-50 hover:bg-blue-100 border border-blue-200 transition text-xs flex items-center justify-between group"
+              >
+                <div className="flex items-center space-x-2">
+                  <Shield className="w-3.5 h-3.5 text-blue-600" />
+                  <div>
+                    <p className="font-bold text-blue-900">Ayush Patil (Admin & Creator)</p>
+                    <p className="text-[10px] text-blue-600">ayushpatil7740@gmail.com • Full Admin Access</p>
+                  </div>
+                </div>
+                <ArrowRight className="w-3.5 h-3.5 text-blue-400 group-hover:translate-x-0.5 transition" />
+              </button>
+
+              <button
+                type="button"
                 onClick={() => handleDemoFill('admin')}
                 disabled={loading}
                 className="w-full text-left p-2.5 rounded-xl bg-purple-50 hover:bg-purple-100 border border-purple-200 transition text-xs flex items-center justify-between group"
