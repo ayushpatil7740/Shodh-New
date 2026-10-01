@@ -125,11 +125,30 @@ export const Login = () => {
                   <User className="w-3.5 h-3.5 text-brand-600" />
                   <div>
                     <p className="font-bold text-brand-900">Student: Aarav Sharma</p>
-                    <p className="text-[10px] text-brand-600">Lost MacBook & active listings</p>
+                    <p className="text-[10px] text-brand-600">aarav@shodh.org • Lost MacBook</p>
                   </div>
                 </div>
                 <ArrowRight className="w-3.5 h-3.5 text-brand-400 group-hover:translate-x-0.5 transition" />
               </button>
+
+              <button
+                type="button"
+                onClick={() => handleDemoFill('user2')}
+                disabled={loading}
+                className="w-full text-left p-2.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 transition text-xs flex items-center justify-between group"
+              >
+                <div className="flex items-center space-x-2">
+                  <User className="w-3.5 h-3.5 text-emerald-600" />
+                  <div>
+                    <p className="font-bold text-emerald-900">Student: Priya Patel</p>
+                    <p className="text-[10px] text-emerald-600">priya@shodh.org • Found AirPods</p>
+                  </div>
+                </div>
+                <ArrowRight className="w-3.5 h-3.5 text-emerald-400 group-hover:translate-x-0.5 transition" />
+              </button>
+            </div>
+            <div className="pt-1 text-[11px] text-slate-500 bg-white/60 p-2 rounded-lg border border-slate-200/50">
+              💡 <strong>Password:</strong> Admin: <code className="bg-slate-100 px-1 rounded">admin123</code> (or <code className="bg-slate-100 px-1 rounded">adminpassword123</code>) | Students: <code className="bg-slate-100 px-1 rounded">user123</code>
             </div>
           </div>
 
