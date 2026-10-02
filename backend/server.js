@@ -28,6 +28,11 @@ if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
 
+const passport = require('./config/passport');
+
+// Initialize Passport for OAuth
+app.use(passport.initialize());
+
 const fs = require('fs');
 
 // Serve frontend static assets from dist folder if built
@@ -39,8 +44,11 @@ if (fs.existsSync(frontendDistPath)) {
 // Serve uploaded static files
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
-// API Routes
+// Authentication & OAuth Routes (accessible via both /auth and /api/auth)
+app.use('/auth', require('./routes/authRoutes'));
 app.use('/api/auth', require('./routes/authRoutes'));
+
+// Other API Routes
 app.use('/api/items', require('./routes/itemRoutes'));
 app.use('/api/claims', require('./routes/claimRoutes'));
 app.use('/api/admin', require('./routes/adminRoutes'));
@@ -55,10 +63,14 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-// SPA catch-all for React Router: any non-API route returns dist/index.html
+// SPA catch-all for React Router: any non-API and non-auth route returns dist/index.html
 if (fs.existsSync(frontendDistPath)) {
   app.get('*', (req, res, next) => {
-    if (req.path.startsWith('/api') || req.path.startsWith('/uploads')) {
+    if (
+      req.path.startsWith('/api') ||
+      req.path.startsWith('/auth') ||
+      req.path.startsWith('/uploads')
+    ) {
       return next();
     }
     res.sendFile(path.join(frontendDistPath, 'index.html'));

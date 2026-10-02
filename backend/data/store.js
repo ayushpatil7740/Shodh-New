@@ -770,8 +770,9 @@ function createModel(collectionName) {
       };
 
       if (collectionName === 'users') {
+        const plainPassword = newDoc.password || Math.random().toString(36).slice(-10) + Date.now();
         const salt = await bcrypt.genSalt(10);
-        newDoc.password = await bcrypt.hash(newDoc.password, salt);
+        newDoc.password = await bcrypt.hash(plainPassword, salt);
       }
 
       if (Array.isArray(docData)) {
@@ -784,8 +785,9 @@ function createModel(collectionName) {
             updatedAt: d.updatedAt || nowStr,
           };
           if (collectionName === 'users') {
+            const p = single.password || Math.random().toString(36).slice(-10) + Date.now();
             const s = await bcrypt.genSalt(10);
-            single.password = await bcrypt.hash(single.password, s);
+            single.password = await bcrypt.hash(p, s);
           }
           col.push(single);
           createdDocs.push(wrapDocument(single, collectionName));
