@@ -11,10 +11,21 @@ export const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(() => localStorage.getItem('shodh_token') || null);
   const [loading, setLoading] = useState(true);
 
-  // Validate token with backend on mount
+  // Validate token with backend on mount (supports OAuth query parameter redirect)
   useEffect(() => {
     const verifyUser = async () => {
-      const storedToken = localStorage.getItem('shodh_token');
+      // Check if token was delivered in URL query params via Google OAuth redirect
+      const urlParams = new URLSearchParams(window.location.search);
+      const urlToken = urlParams.get('token');
+      if (urlToken) {
+        localStorage.setItem('shodh_token', urlToken);
+        setToken(urlToken);
+        // Clean URL cleanly without triggering page reload
+        const cleanPath = window.location.pathname;
+        window.history.replaceState({}, document.title, cleanPath);
+      }
+
+      const storedToken = urlToken || localStorage.getItem('shodh_token');
       if (storedToken) {
         try {
           const res = await authService.getMe();

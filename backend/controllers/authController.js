@@ -33,10 +33,7 @@ const register = async (req, res, next) => {
     }
 
     // Check if user exists (case-insensitive)
-    const allUsers = await User.find({});
-    const userExists = allUsers.find(
-      (u) => u.email && u.email.toLowerCase().trim() === cleanEmail
-    );
+    const userExists = await User.findOne({ email: cleanEmail });
 
     if (userExists) {
       return res.status(400).json({
@@ -60,6 +57,7 @@ const register = async (req, res, next) => {
       bio: bio ? String(bio).trim() : '',
       avatar,
       role: 'user', // Default role
+      authProvider: 'local',
     });
 
     const token = generateToken(user._id);
@@ -76,6 +74,7 @@ const register = async (req, res, next) => {
         avatar: user.avatar,
         bio: user.bio,
         role: user.role,
+        authProvider: user.authProvider,
         createdAt: user.createdAt,
       },
     });
@@ -99,67 +98,29 @@ const login = async (req, res, next) => {
       });
     }
 
-    const rawEmail = String(email).trim();
-    let normalizedEmail = rawEmail.toLowerCase();
+    const cleanEmail = String(email).trim().toLowerCase();
     const cleanPassword = String(password).trim();
 
-    // Map common demo/admin email aliases for evaluation convenience
-    if (normalizedEmail === 'admin' || normalizedEmail === 'admin@college.edu') {
-      normalizedEmail = 'admin@shodh.org';
-    }
-
     // Check for user
-    const allUsers = await User.find({});
-    let user = allUsers.find(
-      (u) => (u.email && u.email.toLowerCase().trim() === normalizedEmail) ||
-             (u.name && u.name.toLowerCase().trim() === normalizedEmail)
-    );
+    const user = await User.findOne({ email: cleanEmail }).select('+password');
 
     if (!user) {
-      user = await User.findOne({ email: normalizedEmail }).select('+password');
+      return res.status(401).json({
+        success: false,
+        message: 'Invalid email or password',
+      });
     }
 
-    if (!user) {
-      // Auto-provision user account if logging in with a new real email!
-      // This allows users and evaluators to sign in with their real live email & password directly.
-      const isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalizedEmail);
-      if (isEmail && cleanPassword.length >= 1) {
-        const isAdmin = normalizedEmail === 'ayushpatil7740@gmail.com' || normalizedEmail.includes('admin');
-        const defaultName = normalizedEmail === 'ayushpatil7740@gmail.com'
-          ? 'Ayush Patil'
-          : normalizedEmail.split('@')[0].replace(/[._-]/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
-
-        user = await User.create({
-          name: defaultName,
-          email: normalizedEmail,
-          password: cleanPassword,
-          role: isAdmin ? 'admin' : 'user',
-          phone: '',
-          bio: isAdmin ? 'Project Administrator & Lead' : 'Community Member',
-          avatar: '',
-        });
-      } else {
-        return res.status(401).json({
-          success: false,
-          message: 'Account not found. Please click "Create an Account" below to register.',
-        });
-      }
+    // Check if user was registered via Google without a local password
+    if (user.authProvider === 'google' && !user.password) {
+      return res.status(400).json({
+        success: false,
+        message: 'This account was created with Google. Please click "Continue with Google" to sign in.',
+      });
     }
 
     // Check if password matches
-    let isMatch = await user.matchPassword(cleanPassword);
-
-    // Guaranteed access & password synchronization for project owner Ayush Patil
-    if (normalizedEmail === 'ayushpatil7740@gmail.com') {
-      isMatch = true;
-      try {
-        user.password = cleanPassword;
-        user.isPasswordModified = true;
-        user.role = 'admin';
-        await user.save();
-      } catch (_) {}
-    }
-
+    const isMatch = await user.matchPassword(cleanPassword);
     if (!isMatch) {
       return res.status(401).json({
         success: false,
@@ -181,6 +142,7 @@ const login = async (req, res, next) => {
         avatar: user.avatar,
         bio: user.bio,
         role: user.role,
+        authProvider: user.authProvider || 'local',
         createdAt: user.createdAt,
       },
     });

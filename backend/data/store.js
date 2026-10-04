@@ -49,68 +49,7 @@ function getInitialSeedData() {
 
   const now = Date.now();
 
-  const users = [
-    {
-      _id: adminId,
-      name: 'Campus Security Admin',
-      email: 'admin@shodh.org',
-      password: adminPasswordHash,
-      phone: '+91 98765 43210',
-      role: 'admin',
-      bio: 'Official Campus Security & Lost-Found Desk Administrator',
-      avatar: '',
-      createdAt: new Date(now - 1000 * 60 * 60 * 24 * 30).toISOString(),
-      updatedAt: new Date(now - 1000 * 60 * 60 * 24 * 30).toISOString(),
-    },
-    {
-      _id: '66d0a0000000000000000005',
-      name: 'Ayush Patil',
-      email: 'ayushpatil7740@gmail.com',
-      password: adminPasswordHash,
-      phone: '+91 98765 43210',
-      role: 'admin',
-      bio: 'Project Lead & System Administrator',
-      avatar: '',
-      createdAt: new Date(now - 1000 * 60 * 60 * 24 * 30).toISOString(),
-      updatedAt: new Date(now - 1000 * 60 * 60 * 24 * 30).toISOString(),
-    },
-    {
-      _id: user1Id,
-      name: 'Aarav Sharma',
-      email: 'aarav@shodh.org',
-      password: userPasswordHash,
-      phone: '+91 91234 56789',
-      role: 'user',
-      bio: 'B.Tech Computer Science | Year 3',
-      avatar: '',
-      createdAt: new Date(now - 1000 * 60 * 60 * 24 * 20).toISOString(),
-      updatedAt: new Date(now - 1000 * 60 * 60 * 24 * 20).toISOString(),
-    },
-    {
-      _id: user2Id,
-      name: 'Priya Patel',
-      email: 'priya@shodh.org',
-      password: userPasswordHash,
-      phone: '+91 99887 76655',
-      role: 'user',
-      bio: 'Biotechnology Dept | Year 2',
-      avatar: '',
-      createdAt: new Date(now - 1000 * 60 * 60 * 24 * 15).toISOString(),
-      updatedAt: new Date(now - 1000 * 60 * 60 * 24 * 15).toISOString(),
-    },
-    {
-      _id: user3Id,
-      name: 'Rohit Verma',
-      email: 'rohit@shodh.org',
-      password: userPasswordHash,
-      phone: '+91 94455 66778',
-      role: 'user',
-      bio: 'Mechanical Engineering | Year 4',
-      avatar: '',
-      createdAt: new Date(now - 1000 * 60 * 60 * 24 * 10).toISOString(),
-      updatedAt: new Date(now - 1000 * 60 * 60 * 24 * 10).toISOString(),
-    },
-  ];
+  const users = [];
 
   const items = [
     {

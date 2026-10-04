@@ -26,30 +26,3 @@ export const ITEM_STATUSES = [
   { value: 'resolved', label: 'Resolved', color: 'bg-emerald-50 text-emerald-700 border-emerald-200' },
   { value: 'handed_over', label: 'Handed Over', color: 'bg-teal-50 text-teal-700 border-teal-200' },
 ];
-
-export const DEMO_ACCOUNTS = {
-  ayush: {
-    email: 'ayushpatil7740@gmail.com',
-    password: 'adminpassword123',
-    label: 'Ayush Patil (Project Lead / Admin)',
-    badge: 'Full Platform & Admin Access',
-  },
-  admin: {
-    email: 'admin@shodh.org',
-    password: 'adminpassword123',
-    label: 'Campus Admin (Security Desk)',
-    badge: 'Admin Panel & Moderation Access',
-  },
-  user1: {
-    email: 'aarav@shodh.org',
-    password: 'userpassword123',
-    label: 'Aarav Sharma (Student)',
-    badge: 'Lost MacBook & Resolved Sony Headphones',
-  },
-  user2: {
-    email: 'priya@shodh.org',
-    password: 'userpassword123',
-    label: 'Priya Patel (Student)',
-    badge: 'Found AirPods & Lost Calculator',
-  },
-};

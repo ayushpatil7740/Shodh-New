@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Compass, Mail, Lock, AlertCircle, ArrowRight, Zap, Shield, User } from 'lucide-react';
+import { Compass, Mail, Lock, AlertCircle } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
-import { DEMO_ACCOUNTS } from '../utils/constants';
 
 export const Login = () => {
   const navigate = useNavigate();
@@ -19,29 +18,18 @@ export const Login = () => {
 
   const from = location.state?.from?.pathname || '/dashboard';
 
+  // Check URL parameters for OAuth errors or token redirects
+  useEffect(() => {
+    const params = new URLSearchParams(location.search);
+    const urlError = params.get('error');
+    if (urlError) {
+      setError(decodeURIComponent(urlError));
+    }
+  }, [location]);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleDemoFill = async (accountKey) => {
-    const account = DEMO_ACCOUNTS[accountKey];
-    if (account) {
-      setFormData({
-        email: account.email,
-        password: account.password,
-      });
-      setError('');
-      setLoading(true);
-      try {
-        await login(account.email, account.password);
-        navigate(from, { replace: true });
-      } catch (err) {
-        setError(err.response?.data?.message || 'Demo login failed');
-      } finally {
-        setLoading(false);
-      }
-    }
   };
 
   const handleSubmit = async (e) => {
@@ -59,6 +47,19 @@ export const Login = () => {
     } finally {
       setLoading(false);
     }
+  };
+
+  const handleGoogleLogin = () => {
+    const apiUrl = (import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL || '').trim();
+    let backendOrigin = '';
+    if (apiUrl && !apiUrl.startsWith('/')) {
+      backendOrigin = apiUrl.replace(/\/api\/?$/, '').replace(/\/+$/, '');
+    } else {
+      // In development or same-host proxy
+      backendOrigin = window.location.origin;
+    }
+    // Redirect to backend Google OAuth initiation endpoint
+    window.location.href = `${backendOrigin}/api/auth/google`;
   };
 
   return (
@@ -89,86 +90,7 @@ export const Login = () => {
             </div>
           )}
 
-          {/* Quick Demo Login Helper Box */}
-          <div className="bg-slate-50 rounded-2xl p-4 border border-slate-200/80 space-y-2">
-            <div className="flex items-center space-x-1.5 text-xs font-bold text-slate-700">
-              <Zap className="w-3.5 h-3.5 text-amber-500" />
-              <span>Instant One-Click Demo Logins</span>
-            </div>
-            <p className="text-[11px] text-slate-500">
-              Click any profile below to immediately test the platform:
-            </p>
-            <div className="grid grid-cols-1 gap-2 pt-1">
-              <button
-                type="button"
-                onClick={() => handleDemoFill('ayush')}
-                disabled={loading}
-                className="w-full text-left p-2.5 rounded-xl bg-blue-50 hover:bg-blue-100 border border-blue-200 transition text-xs flex items-center justify-between group"
-              >
-                <div className="flex items-center space-x-2">
-                  <Shield className="w-3.5 h-3.5 text-blue-600" />
-                  <div>
-                    <p className="font-bold text-blue-900">Ayush Patil (Admin & Creator)</p>
-                    <p className="text-[10px] text-blue-600">ayushpatil7740@gmail.com • Full Admin Access</p>
-                  </div>
-                </div>
-                <ArrowRight className="w-3.5 h-3.5 text-blue-400 group-hover:translate-x-0.5 transition" />
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleDemoFill('admin')}
-                disabled={loading}
-                className="w-full text-left p-2.5 rounded-xl bg-purple-50 hover:bg-purple-100 border border-purple-200 transition text-xs flex items-center justify-between group"
-              >
-                <div className="flex items-center space-x-2">
-                  <Shield className="w-3.5 h-3.5 text-purple-600" />
-                  <div>
-                    <p className="font-bold text-purple-900">Campus Admin Desk</p>
-                    <p className="text-[10px] text-purple-600">Full moderation & analytics panel</p>
-                  </div>
-                </div>
-                <ArrowRight className="w-3.5 h-3.5 text-purple-400 group-hover:translate-x-0.5 transition" />
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleDemoFill('user1')}
-                disabled={loading}
-                className="w-full text-left p-2.5 rounded-xl bg-brand-50 hover:bg-brand-100 border border-brand-200 transition text-xs flex items-center justify-between group"
-              >
-                <div className="flex items-center space-x-2">
-                  <User className="w-3.5 h-3.5 text-brand-600" />
-                  <div>
-                    <p className="font-bold text-brand-900">Student: Aarav Sharma</p>
-                    <p className="text-[10px] text-brand-600">aarav@shodh.org • Lost MacBook</p>
-                  </div>
-                </div>
-                <ArrowRight className="w-3.5 h-3.5 text-brand-400 group-hover:translate-x-0.5 transition" />
-              </button>
-
-              <button
-                type="button"
-                onClick={() => handleDemoFill('user2')}
-                disabled={loading}
-                className="w-full text-left p-2.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 transition text-xs flex items-center justify-between group"
-              >
-                <div className="flex items-center space-x-2">
-                  <User className="w-3.5 h-3.5 text-emerald-600" />
-                  <div>
-                    <p className="font-bold text-emerald-900">Student: Priya Patel</p>
-                    <p className="text-[10px] text-emerald-600">priya@shodh.org • Found AirPods</p>
-                  </div>
-                </div>
-                <ArrowRight className="w-3.5 h-3.5 text-emerald-400 group-hover:translate-x-0.5 transition" />
-              </button>
-            </div>
-            <div className="pt-1 text-[11px] text-slate-500 bg-white/60 p-2 rounded-lg border border-slate-200/50">
-              💡 <strong>Password:</strong> Admin: <code className="bg-slate-100 px-1 rounded">admin123</code> (or <code className="bg-slate-100 px-1 rounded">adminpassword123</code>) | Students: <code className="bg-slate-100 px-1 rounded">user123</code>
-            </div>
-          </div>
-
-          {/* Standard Form */}
+          {/* Standard Email & Password Form */}
           <form onSubmit={handleSubmit} className="space-y-4 text-xs">
             <div>
               <label className="block font-semibold text-slate-700 mb-1">Email Address</label>
@@ -180,7 +102,7 @@ export const Login = () => {
                   value={formData.email}
                   onChange={handleChange}
                   required
-                  placeholder="name@shodh.org"
+                  placeholder="name@example.com"
                   className="w-full pl-10 pr-3.5 py-2.5 bg-slate-50 rounded-xl border border-slate-200 focus:ring-2 focus:ring-brand-500/20 focus:border-brand-500"
                 />
               </div>
@@ -211,7 +133,41 @@ export const Login = () => {
             </button>
           </form>
 
-          {/* Footer Note */}
+          {/* Divider */}
+          <div className="relative flex py-1 items-center">
+            <div className="flex-grow border-t border-slate-200"></div>
+            <span className="shrink-0 mx-4 text-xs text-slate-400 font-medium">— or —</span>
+            <div className="flex-grow border-t border-slate-200"></div>
+          </div>
+
+          {/* Continue with Google Button */}
+          <button
+            type="button"
+            onClick={handleGoogleLogin}
+            className="w-full py-2.5 px-4 rounded-xl border border-slate-200 hover:border-slate-300 bg-white hover:bg-slate-50 text-slate-700 font-semibold text-xs sm:text-sm flex items-center justify-center space-x-2.5 transition shadow-xs"
+          >
+            <svg className="w-4 h-4" viewBox="0 0 24 24">
+              <path
+                fill="#4285F4"
+                d="M23.745 12.27c0-.7-.06-1.4-.19-2.07H12v4.51h6.6c-.29 1.52-1.14 2.8-2.4 3.65v3.03h3.88c2.28-2.1 3.66-5.2 3.66-9.12z"
+              />
+              <path
+                fill="#34A853"
+                d="M12 24c3.24 0 5.95-1.08 7.93-2.91l-3.88-3.03c-1.08.72-2.45 1.16-4.05 1.16-3.12 0-5.77-2.1-6.72-4.93H1.24v3.13C3.26 21.36 7.33 24 12 24z"
+              />
+              <path
+                fill="#FBBC05"
+                d="M5.28 14.29c-.25-.72-.38-1.49-.38-2.29s.13-1.57.38-2.29V6.57H1.24C.45 8.14 0 9.99 0 12s.45 3.86 1.24 5.43l4.04-3.14z"
+              />
+              <path
+                fill="#EA4335"
+                d="M12 4.75c1.77 0 3.35.61 4.6 1.8l3.42-3.42C17.95 1.19 15.24 0 12 0 7.33 0 3.26 2.64 1.24 6.57l4.04 3.14c.95-2.83 3.6-4.96 6.72-4.96z"
+              />
+            </svg>
+            <span>Continue with Google</span>
+          </button>
+
+          {/* Footer Navigation Link */}
           <div className="pt-2 text-center text-xs text-slate-500">
             Don't have an account?{' '}
             <Link to="/register" className="font-bold text-brand-600 hover:text-brand-700">

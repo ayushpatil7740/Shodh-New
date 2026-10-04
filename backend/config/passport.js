@@ -7,8 +7,8 @@ const clientSecret = process.env.GOOGLE_CLIENT_SECRET;
 const callbackURL =
   process.env.GOOGLE_CALLBACK_URL ||
   (process.env.NODE_ENV === 'production'
-    ? 'https://shodh-portal.onrender.com/auth/google/callback'
-    : 'http://localhost:5000/auth/google/callback');
+    ? 'https://shodh-portal.onrender.com/api/auth/google/callback'
+    : 'http://localhost:5000/api/auth/google/callback');
 
 if (clientID && clientSecret) {
   passport.use(
@@ -32,35 +32,38 @@ if (clientID && clientSecret) {
             return done(new Error('No email found in Google account profile'), null);
           }
 
-          // Check if user already exists (case-insensitive)
-          const allUsers = await User.find({});
-          let user = allUsers.find((u) => u.email && u.email.toLowerCase().trim() === email);
-
-          if (!user) {
-            user = await User.findOne({ email });
-          }
+          // Check if user already exists
+          let user = await User.findOne({ email });
 
           if (user) {
-            // Existing user: attach Google avatar if missing
+            // Existing user: link Google ID and avatar if missing
+            let updated = false;
+            if (!user.googleId && profile.id) {
+              user.googleId = profile.id;
+              updated = true;
+            }
             if (!user.avatar && avatar) {
+              user.avatar = avatar;
+              updated = true;
+            }
+            if (updated) {
               try {
-                user.avatar = avatar;
                 await user.save();
               } catch (_) {}
             }
             return done(null, user);
           }
 
-          // New user: auto-create user document using Google profile
-          const isAdmin = email === 'ayushpatil7740@gmail.com' || email.includes('admin');
+          // New user: auto-create User document with Google profile data and authProvider: 'google'
           user = await User.create({
             name,
             email,
             avatar,
-            role: isAdmin ? 'admin' : 'user',
+            role: 'user',
             phone: '',
             bio: 'Signed in via Google',
             googleId: profile.id,
+            authProvider: 'google',
           });
 
           return done(null, user);

@@ -1,21 +1,14 @@
-const { resetDB } = require('../data/store');
+/**
+ * Shodh Seeder
+ * Demo accounts have been removed for production security.
+ * Real users register via the portal (/register) or via Google Sign-In.
+ * Use `npm run make-admin <email>` to grant admin privileges to any real account.
+ */
 
 const seedData = async () => {
-  console.log('🧹 Resetting database with initial realistic sample data...');
-  resetDB();
-  console.log('✅ Shodh database successfully reset and seeded!');
-  console.log('----------------------------------------------------');
-  console.log('🔑 DEMO CREDENTIALS:');
-  console.log('  👑 Admin Account:');
-  console.log('     Email:    admin@shodh.org');
-  console.log('     Password: adminpassword123');
-  console.log('  👤 User Account 1:');
-  console.log('     Email:    aarav@shodh.org');
-  console.log('     Password: userpassword123');
-  console.log('  👤 User Account 2:');
-  console.log('     Email:    priya@shodh.org');
-  console.log('     Password: userpassword123');
-  console.log('----------------------------------------------------');
+  console.log('ℹ️ Demo seed data has been disabled for production security.');
+  console.log('💡 Users can register via the portal (/register) or using "Continue with Google".');
+  console.log('👑 To promote any user to Admin, run: node backend/scripts/makeAdmin.js <email>');
 };
 
 if (require.main === module) {
