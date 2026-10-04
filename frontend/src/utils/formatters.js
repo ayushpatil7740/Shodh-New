@@ -40,10 +40,18 @@ export const timeAgo = (dateString) => {
 
 export const resolveImageUrl = (url) => {
   if (!url) return null;
-  if (url.startsWith('http://') || url.startsWith('https://')) {
+  if (url.startsWith('http://') || url.startsWith('https://') || url.startsWith('data:')) {
     return url;
   }
-  // In development Vite proxy handles /uploads, or fallback to backend
+
+  // Prepend backend URL when running standalone on Netlify
+  const apiUrl = (import.meta.env.VITE_API_URL || '').trim();
+  if (apiUrl) {
+    const backendOrigin = apiUrl.replace(/\/api\/?$/, '').replace(/\/+$/, '');
+    const cleanPath = url.startsWith('/') ? url : `/${url}`;
+    return `${backendOrigin}${cleanPath}`;
+  }
+
   return url;
 };
 

@@ -1,7 +1,22 @@
 import axios from 'axios';
 
+// Safely normalize API base URL
+const getBaseURL = () => {
+  let url = (import.meta.env.VITE_API_URL || import.meta.env.VITE_API_BASE_URL || '').trim();
+  if (!url) {
+    return '/api';
+  }
+  // Remove trailing slashes
+  url = url.replace(/\/+$/, '');
+  // Ensure the base URL ends with /api to match mounted routes
+  if (!url.endsWith('/api')) {
+    url = `${url}/api`;
+  }
+  return url;
+};
+
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL || '/api',
+  baseURL: getBaseURL(),
 });
 
 // Interceptor to attach JWT token to all requests
@@ -22,7 +37,10 @@ api.interceptors.response.use(
   (error) => {
     if (error.response && error.response.status === 401) {
       // If token expired on protected action, clear stored token
-      const isAuthRoute = error.config.url.includes('/auth/login') || error.config.url.includes('/auth/register');
+      const isAuthRoute =
+        error.config &&
+        error.config.url &&
+        (error.config.url.includes('/auth/login') || error.config.url.includes('/auth/register'));
       if (!isAuthRoute) {
         localStorage.removeItem('shodh_token');
         localStorage.removeItem('shodh_user');

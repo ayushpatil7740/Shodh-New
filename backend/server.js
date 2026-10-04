@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const morgan = require('morgan');
 const path = require('path');
+const fs = require('fs');
 const dotenv = require('dotenv');
 const { connectDB } = require('./config/db');
 const errorHandler = require('./middleware/errorHandler');
@@ -11,16 +12,52 @@ dotenv.config();
 
 const app = express();
 
-// Connect to Database
+// Connect to Database (MongoDB Atlas with fallback)
 connectDB();
 
-// Middleware
-app.use(
-  cors({
-    origin: process.env.CLIENT_URL || '*',
-    credentials: true,
-  })
-);
+// CORS Configuration
+const defaultAllowedOrigins = [
+  'https://shodh-portal.netlify.app',
+  'https://shodh-new.onrender.com',
+  'https://shodh-portal.onrender.com',
+  'http://localhost:5173',
+  'http://localhost:5000',
+  'http://localhost:3000',
+];
+
+const envOrigins = [process.env.CLIENT_URL, process.env.FRONTEND_URL]
+  .filter(Boolean)
+  .flatMap((val) => val.split(',').map((u) => u.trim().replace(/\/+$/, '')))
+  .filter(Boolean);
+
+const allowedOrigins = Array.from(new Set([...defaultAllowedOrigins, ...envOrigins]));
+
+const corsOptions = {
+  origin: function (origin, callback) {
+    // Allow non-browser requests (Postman, curl, server-to-server)
+    if (!origin) return callback(null, true);
+
+    const cleanOrigin = origin.trim().replace(/\/+$/, '');
+    if (
+      allowedOrigins.includes(cleanOrigin) ||
+      cleanOrigin.endsWith('.netlify.app') ||
+      cleanOrigin.endsWith('.onrender.com') ||
+      process.env.NODE_ENV !== 'production'
+    ) {
+      return callback(null, true);
+    }
+    return callback(new Error(`CORS policy does not allow access from origin: ${origin}`));
+  },
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With', 'Accept'],
+  exposedHeaders: ['Set-Cookie'],
+  maxAge: 86400,
+};
+
+app.use(cors(corsOptions));
+app.options('*', cors(corsOptions));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
@@ -29,46 +66,86 @@ if (process.env.NODE_ENV === 'development') {
 }
 
 const passport = require('./config/passport');
-
-// Initialize Passport for OAuth
 app.use(passport.initialize());
 
-const fs = require('fs');
+// Serve uploaded static files
+const uploadsPath = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadsPath)) {
+  fs.mkdirSync(uploadsPath, { recursive: true });
+}
+app.use('/uploads', express.static(uploadsPath));
 
-// Serve frontend static assets from dist folder if built
+// Serve frontend static assets from dist folder if built (monolith build on Render)
 const frontendDistPath = path.join(__dirname, '..', 'frontend', 'dist');
 if (fs.existsSync(frontendDistPath)) {
   app.use(express.static(frontendDistPath));
 }
 
-// Serve uploaded static files
-app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
+// Route Modules
+const authRoutes = require('./routes/authRoutes');
+const itemRoutes = require('./routes/itemRoutes');
+const claimRoutes = require('./routes/claimRoutes');
+const adminRoutes = require('./routes/adminRoutes');
+const notificationRoutes = require('./routes/notificationRoutes');
 
-// Authentication & OAuth Routes (accessible via both /auth and /api/auth)
-app.use('/auth', require('./routes/authRoutes'));
-app.use('/api/auth', require('./routes/authRoutes'));
+// Mount routes on BOTH /api/* (standard) and /* (fallback)
+// This guarantees that any client calling either /api/auth/login or /auth/login resolves successfully!
+app.use('/api/auth', authRoutes);
+app.use('/auth', authRoutes);
 
-// Other API Routes
-app.use('/api/items', require('./routes/itemRoutes'));
-app.use('/api/claims', require('./routes/claimRoutes'));
-app.use('/api/admin', require('./routes/adminRoutes'));
-app.use('/api/notifications', require('./routes/notificationRoutes'));
+app.use('/api/items', itemRoutes);
+app.use('/items', itemRoutes);
+
+app.use('/api/claims', claimRoutes);
+app.use('/claims', claimRoutes);
+
+app.use('/api/admin', adminRoutes);
+app.use('/admin', adminRoutes);
+
+app.use('/api/notifications', notificationRoutes);
+app.use('/notifications', notificationRoutes);
 
 // Health check endpoint
-app.get('/api/health', (req, res) => {
+const healthHandler = (req, res) => {
   res.status(200).json({
     status: 'online',
     app: 'Shodh - Lost and Found Portal API',
+    uptime: Math.floor(process.uptime()),
     timestamp: new Date().toISOString(),
   });
-});
+};
+app.get('/api/health', healthHandler);
+app.get('/health', healthHandler);
 
-// SPA catch-all for React Router: any non-API and non-auth route returns dist/index.html
+// Handle undefined API and service routes
+app.all(
+  [
+    '/api',
+    '/api/*',
+    '/auth/*',
+    '/items/*',
+    '/claims/*',
+    '/admin/*',
+    '/notifications/*',
+  ],
+  (req, res) => {
+    res.status(404).json({
+      success: false,
+      message: `API Route ${req.originalUrl} not found`,
+    });
+  }
+);
+
+// SPA catch-all for React Router: any other non-API route returns dist/index.html if built
 if (fs.existsSync(frontendDistPath)) {
   app.get('*', (req, res, next) => {
     if (
       req.path.startsWith('/api') ||
       req.path.startsWith('/auth') ||
+      req.path.startsWith('/items') ||
+      req.path.startsWith('/claims') ||
+      req.path.startsWith('/admin') ||
+      req.path.startsWith('/notifications') ||
       req.path.startsWith('/uploads')
     ) {
       return next();
@@ -76,14 +153,6 @@ if (fs.existsSync(frontendDistPath)) {
     res.sendFile(path.join(frontendDistPath, 'index.html'));
   });
 }
-
-// Handle undefined API routes
-app.use('/api/*', (req, res) => {
-  res.status(404).json({
-    success: false,
-    message: `API Route ${req.originalUrl} not found`,
-  });
-});
 
 // Centralized error handler
 app.use(errorHandler);

@@ -14,8 +14,11 @@ const generateToken = (id) => {
 // Handle successful Google authentication callback
 const googleCallback = (req, res) => {
   try {
+    const rawClientUrl = process.env.CLIENT_URL || process.env.FRONTEND_URL || 'https://shodh-portal.netlify.app';
+    const clientUrl = rawClientUrl.split(',')[0].trim().replace(/\/+$/, '');
+
     if (!req.user) {
-      return res.redirect('/login?error=' + encodeURIComponent('Authentication failed with Google'));
+      return res.redirect(`${clientUrl}/login?error=` + encodeURIComponent('Authentication failed with Google'));
     }
 
     const token = generateToken(req.user._id);
@@ -43,8 +46,8 @@ const googleCallback = (req, res) => {
       sameSite: 'lax',
     });
 
-    // Determine frontend redirect destination
-    const targetUrl = '/dashboard';
+    // Frontend redirect destination
+    const targetUrl = `${clientUrl}/dashboard`;
 
     // Send an immediate browser bridge that sets localStorage and navigates to the dashboard
     // This allows the existing React frontend to receive the token with zero frontend file changes!
@@ -97,7 +100,9 @@ const googleCallback = (req, res) => {
     res.status(200).send(htmlResponse);
   } catch (error) {
     console.error('Google Callback Controller Error:', error);
-    res.redirect('/login?error=' + encodeURIComponent('Failed to process Google sign-in'));
+    const rawClientUrl = process.env.CLIENT_URL || process.env.FRONTEND_URL || 'https://shodh-portal.netlify.app';
+    const clientUrl = rawClientUrl.split(',')[0].trim().replace(/\/+$/, '');
+    res.redirect(`${clientUrl}/login?error=` + encodeURIComponent('Failed to process Google sign-in'));
   }
 };
 
