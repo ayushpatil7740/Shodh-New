@@ -1,8 +1,19 @@
 const path = require('path');
+const fs = require('fs');
 const dotenv = require('dotenv');
 
-// Load environment variables from backend/.env
-dotenv.config({ path: path.join(__dirname, '..', '.env') });
+// Check potential locations for .env file
+const envPaths = [
+  path.join(__dirname, '..', '.env'),
+  path.join(process.cwd(), '.env'),
+  path.join(process.cwd(), 'backend', '.env'),
+];
+
+for (const envPath of envPaths) {
+  if (fs.existsSync(envPath)) {
+    dotenv.config({ path: envPath });
+  }
+}
 
 const { connectDB, disconnectDB } = require('../config/db');
 const User = require('../models/User');
@@ -17,7 +28,7 @@ async function makeAdmin() {
     console.error('❌ Error: No email address provided.\n');
     console.log('Usage:');
     console.log('  node backend/scripts/makeAdmin.js <user-email>');
-    console.log('  or: npm run make-admin <user-email> (inside backend folder)\n');
+    console.log('  or: npm run make-admin <user-email>\n');
     console.log('Example:');
     console.log('  node backend/scripts/makeAdmin.js realuser@gmail.com\n');
     process.exit(1);
