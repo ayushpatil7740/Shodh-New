@@ -1,5 +1,17 @@
 {
-  "users": [],
+  "users": [
+    {
+      "_id": "6ac50cf0005f6c122e2900f8",
+      "name": "Ayush Patil",
+      "email": "ayushpatil7740@gmail.com",
+      "password": "$2a$10$FqUUGH39gyskjSsB.z7CPeyAk6W462r7x1.tyCMBgFM6pyMnWUXrG",
+      "role": "admin",
+      "authProvider": "local",
+      "bio": "Project Lead & System Administrator",
+      "createdAt": "2026-10-06T15:00:00.195Z",
+      "updatedAt": "2026-10-06T15:00:13.164Z"
+    }
+  ],
   "items": [
     {
       "_id": "66d0b0000000000000000001",
