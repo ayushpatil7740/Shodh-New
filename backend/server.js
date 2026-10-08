@@ -7,7 +7,17 @@ const dotenv = require('dotenv');
 const { connectDB } = require('./config/db');
 const errorHandler = require('./middleware/errorHandler');
 
-// Load environment variables
+// Load environment variables from backend/.env or root .env
+const envPaths = [
+  path.join(__dirname, '.env'),
+  path.join(process.cwd(), 'backend', '.env'),
+  path.join(process.cwd(), '.env'),
+];
+for (const envPath of envPaths) {
+  if (fs.existsSync(envPath)) {
+    dotenv.config({ path: envPath });
+  }
+}
 dotenv.config();
 
 const app = express();

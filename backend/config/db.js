@@ -48,9 +48,27 @@ function maskMongoURI(uri) {
   return uri.replace(/(:\/\/)([^:@]+):([^@]+)@/, '$1$2:****@');
 }
 
+const path = require('path');
+const fs = require('fs');
+const dotenv = require('dotenv');
+
 let isConnecting = false;
 
 const connectDB = async () => {
+  // Ensure .env is loaded if called before server initialization
+  if (!process.env.MONGO_URI && !process.env.MONGODB_URI) {
+    const envPaths = [
+      path.join(__dirname, '..', '.env'),
+      path.join(process.cwd(), 'backend', '.env'),
+      path.join(process.cwd(), '.env'),
+    ];
+    for (const envPath of envPaths) {
+      if (fs.existsSync(envPath)) {
+        dotenv.config({ path: envPath });
+      }
+    }
+  }
+
   const rawUri = process.env.MONGO_URI || process.env.MONGODB_URI;
 
   if (!rawUri) {
