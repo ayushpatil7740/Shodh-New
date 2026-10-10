@@ -6,7 +6,8 @@
     "start": "node backend/server.js",
     "dev": "node --watch backend/server.js",
     "build": "npm install --prefix backend && npm install --prefix frontend --include=dev && npm run build --prefix frontend",
-    "make-admin": "node backend/scripts/makeAdmin.js"
+    "make-admin": "node backend/scripts/makeAdmin.js",
+    "reset-password": "node backend/scripts/resetPassword.js"
   },
   "engines": {
     "node": ">=18.0.0"

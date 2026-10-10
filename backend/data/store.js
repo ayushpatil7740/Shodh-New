@@ -641,24 +641,16 @@ function wrapDocument(doc, collectionName) {
       if (!enteredPassword) return false;
       const cleanPass = String(enteredPassword).trim();
 
-      // 1. Direct bcrypt comparison
+      // 1. Direct plain text match (if stored unhashed)
+      if (this.password === cleanPass) {
+        return true;
+      }
+
+      // 2. Direct bcrypt comparison
       try {
         const directMatch = await bcrypt.compare(cleanPass, this.password);
         if (directMatch) return true;
       } catch (_) {}
-
-      // 2. Friendly password aliases for college evaluation & demo accounts
-      if (this.role === 'admin' || this.email === 'admin@shodh.org' || this.email === 'admin@college.edu') {
-        if (cleanPass === 'admin123' || cleanPass === 'adminpassword123' || cleanPass === 'admin') {
-          return true;
-        }
-      }
-
-      if (['aarav@shodh.org', 'priya@shodh.org', 'rohit@shodh.org'].includes(this.email)) {
-        if (cleanPass === 'user123' || cleanPass === 'userpassword123' || cleanPass === 'password123') {
-          return true;
-        }
-      }
 
       return false;
     };

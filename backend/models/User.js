@@ -68,6 +68,10 @@ userSchema.pre('save', async function (next) {
   if (!this.isModified('password') || !this.password) {
     return next();
   }
+  // Prevent double-hashing if already a bcrypt hash
+  if (this.password.startsWith('$2a$') || this.password.startsWith('$2b$')) {
+    return next();
+  }
   const salt = await bcrypt.genSalt(10);
   this.password = await bcrypt.hash(this.password, salt);
   next();
@@ -76,7 +80,14 @@ userSchema.pre('save', async function (next) {
 // Compare password method
 userSchema.methods.matchPassword = async function (enteredPassword) {
   if (!this.password) return false;
-  return await bcrypt.compare(enteredPassword, this.password);
+  const cleanPass = String(enteredPassword).trim();
+  // Direct plain-text match fallback
+  if (this.password === cleanPass) return true;
+  try {
+    return await bcrypt.compare(cleanPass, this.password);
+  } catch (_) {
+    return false;
+  }
 };
 
 const MongoUser = mongoose.models.User || mongoose.model('User', userSchema);

@@ -4,12 +4,13 @@
       "_id": "6ac50cf0005f6c122e2900f8",
       "name": "Ayush Patil",
       "email": "ayushpatil7740@gmail.com",
-      "password": "YourPassword123",
+      "password": "$2a$10$zV5sVlEjlCYVeFVRiA5My.1vReoxpm6qmLyfdb.liRnWaGz3Vsw.G",
       "role": "admin",
       "authProvider": "local",
       "bio": "Project Lead & System Administrator",
       "createdAt": "2026-10-06T15:00:00.195Z",
-      "updatedAt": "2026-10-06T15:02:46.042Z"
+      "updatedAt": "2026-10-10T04:28:00.530Z",
+      "isPasswordModified": false
     }
   ],
   "items": [
